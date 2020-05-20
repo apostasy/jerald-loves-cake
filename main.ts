@@ -4,8 +4,8 @@ namespace SpriteKind {
     export const defeated = SpriteKind.create()
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (info.score() > 0) {
-        info.changeScoreBy(-1)
+    if (ammo > 0) {
+        ammo += -1
         music.pewPew.play()
         mySprite4 = sprites.create(img`
 . . . . . . . . . . . . . . . . 
@@ -39,7 +39,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     mySprite2.destroy()
-    info.changeScoreBy(1)
+    ammo += 1
     music.baDing.play()
     mySprite2.startEffect(effects.confetti)
 })
@@ -118,6 +118,7 @@ let mySprite5: Sprite = null
 let mySprite3: Sprite = null
 let mySprite2: Sprite = null
 let mySprite4: Sprite = null
+let ammo = 0
 let mySprite: Sprite = null
 mySprite = sprites.create(img`
 . . . . . . . . . . . . . . . . 
@@ -138,6 +139,7 @@ mySprite = sprites.create(img`
 . . . . . . 6 . . . . . . . . . 
 `, SpriteKind.Player)
 mySprite.setPosition(75, 110)
+ammo = 0
 scene.setBackgroundImage(img`
 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
@@ -405,6 +407,9 @@ mySprite,
 true
 )
 music.playMelody("C5 B C5 B G A B C5 ", 100)
+game.onUpdate(function () {
+    info.changeScoreBy(1)
+})
 game.onUpdateInterval(randint(1000, 5000), function () {
     projectile = sprites.createProjectileFromSide(img`
 . . . . . . . . . . . . . . . . 
