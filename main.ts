@@ -10,10 +10,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     mySprite.destroy()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    mySprite2.startEffect(effects.confetti)
     mySprite2.destroy()
     info.changeScoreBy(1)
     music.baDing.play()
-    mySprite2.startEffect(effects.confetti)
 })
 sprites.onDestroyed(SpriteKind.Player, function (sprite) {
     info.changeLifeBy(-1)
