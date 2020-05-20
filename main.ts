@@ -1,8 +1,13 @@
 namespace SpriteKind {
     export const wall = SpriteKind.create()
 }
-sprites.onDestroyed(SpriteKind.Player, function (sprite) {
-    info.changeLifeBy(-1)
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    mySprite.setVelocity(0, -100)
+    pause(500)
+    mySprite.setVelocity(0, 100)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
+    mySprite.destroy()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     mySprite2.startEffect(effects.confetti)
@@ -10,13 +15,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     info.changeScoreBy(1)
     music.baDing.play()
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    mySprite.destroy()
-})
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    mySprite.setVelocity(0, -100)
-    pause(500)
-    mySprite.setVelocity(0, 100)
+sprites.onDestroyed(SpriteKind.Player, function (sprite) {
+    info.changeLifeBy(-1)
 })
 let projectile: Sprite = null
 let mySprite2: Sprite = null
@@ -290,7 +290,7 @@ mySprite,
 true
 )
 music.playMelody("C5 - B - A - B C5 ", 120)
-game.onUpdateInterval(Math.randomRange(1000, 5000), function () {
+game.onUpdateInterval(randint(1000, 5000), function () {
     projectile = sprites.createProjectileFromSide(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -311,7 +311,7 @@ f f f f f f f f f f f f f f f f
 `, -50, 0)
     projectile.y = 110
 })
-game.onUpdateInterval(Math.randomRange(500, 5000), function () {
+game.onUpdateInterval(randint(500, 5000), function () {
     mySprite2 = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
