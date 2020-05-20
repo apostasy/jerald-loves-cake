@@ -10,14 +10,18 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     mySprite.destroy()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    mySprite2.startEffect(effects.confetti)
     mySprite2.destroy()
     info.changeScoreBy(1)
     music.baDing.play()
+    mySprite2.startEffect(effects.confetti)
 })
 sprites.onDestroyed(SpriteKind.Player, function (sprite) {
     info.changeLifeBy(-1)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+})
+let mySprite3: Sprite = null
 let projectile: Sprite = null
 let mySprite2: Sprite = null
 let mySprite: Sprite = null
@@ -265,9 +269,9 @@ mySprite,
 8 . 8 8 8 6 6 6 6 6 . . . . . . 
 . . . . . 6 6 6 6 6 . . . . . . 
 . . . . . . 6 . 6 . . . . . . . 
-. . . . . 6 . . . 6 . 6 . . . . 
-. . . . 6 . . . . . 6 . . . . . 
-. . . . . 6 . . . . . . . . . . 
+. . . . . . 6 . 6 . . . . . . . 
+. . . . . . 6 6 6 6 . . . . . . 
+. . . . . . . . . . . . . . . . 
 `,img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -282,6 +286,23 @@ mySprite,
 . 8 8 8 . 6 6 6 6 6 . . . . . . 
 8 8 . . . 6 6 6 6 6 . . . . . . 
 . . . . . . 6 . 6 . . . . . . . 
+. . . . . 6 . . . 6 . 6 . . . . 
+. . . . 6 . . . . . 6 . . . . . 
+. . . . . 6 . . . . . . . . . . 
+`,img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . 6 6 6 6 6 . . . . . . 
+. . . . . 6 6 6 1 f . . . . . . 
+. . . . . 6 6 6 1 f . . . . . . 
+. . . . . 6 6 6 6 6 . . . . . . 
+. . . . . 6 6 6 6 f . . . . . . 
+. . . . 8 8 8 8 8 8 . . . . . . 
+8 8 . 8 8 6 6 6 6 6 . . . . . . 
+. 8 8 8 . 6 6 6 6 6 . . . . . . 
+. . . . . 6 6 6 6 6 . . . . . . 
+. . . . . . 6 . 6 . . . . . . . 
 . . . . . . 6 . 6 . . . . . . . 
 . . . . . . 6 6 6 6 . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -289,7 +310,7 @@ mySprite,
 300,
 true
 )
-music.playMelody("C5 - B - A - B C5 ", 120)
+music.playMelody("C5 B C5 B G A B C5 ", 100)
 game.onUpdateInterval(randint(1000, 5000), function () {
     projectile = sprites.createProjectileFromSide(img`
 . . . . . . . . . . . . . . . . 
@@ -311,7 +332,7 @@ f f f f f f f f f f f f f f f f
 `, -50, 0)
     projectile.y = 110
 })
-game.onUpdateInterval(randint(500, 5000), function () {
+game.onUpdateInterval(randint(5000, 9000), function () {
     mySprite2 = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -332,4 +353,100 @@ game.onUpdateInterval(randint(500, 5000), function () {
 `, SpriteKind.Food)
     mySprite2.setPosition(160, 110)
     mySprite2.setVelocity(-50, 0)
+})
+game.onUpdateInterval(10000, function () {
+    mySprite3 = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 8 8 2 2 2 . . . . . . 
+. . . . . f 1 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . f 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . . 2 . 2 . . . . . . . 
+. . . 2 . 2 . . . 2 . . . . . . 
+. . . . 2 . . . . . 2 . . . . . 
+. . . . . . . . . 2 . . . . . . 
+`, SpriteKind.Enemy)
+    mySprite3.setPosition(160, 110)
+    animation.runImageAnimation(
+    mySprite3,
+    [img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 8 8 2 2 2 . . . . . . 
+. . . . . f 1 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . f 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . . 2 . 2 . . . . . . . 
+. . . 2 . 2 . . . 2 . . . . . . 
+. . . . 2 . . . . . 2 . . . . . 
+. . . . . . . . . 2 . . . . . . 
+`,img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 8 8 2 2 2 . . . . . . 
+. . . . . f 1 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . f 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . . 2 . 2 . . . . . . . 
+. . . . . . 2 . 2 . . . . . . . 
+. . . . . 2 2 2 2 . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`,img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 8 8 2 2 2 . . . . . . 
+. . . . . f 1 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . f 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . . 2 . 2 . . . . . . . 
+. . . 2 . 2 . . . 2 . . . . . . 
+. . . . 2 . . . . . 2 . . . . . 
+. . . . . . . . . 2 . . . . . . 
+`,img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 8 8 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . f 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . 2 2 2 2 2 . . . . . . 
+. . . . . . 2 . 2 . . . . . . . 
+. . . . . . 2 . 2 . . . . . . . 
+. . . . . 2 2 2 2 . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`],
+    250,
+    true
+    )
+    mySprite3.setVelocity(-50, 0)
 })
