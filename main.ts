@@ -4,9 +4,10 @@ namespace SpriteKind {
     export const defeated = SpriteKind.create()
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    info.changeScoreBy(-1)
-    music.pewPew.play()
-    mySprite4 = sprites.create(img`
+    if (info.score() > 0) {
+        info.changeScoreBy(-1)
+        music.pewPew.play()
+        mySprite4 = sprites.create(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -24,8 +25,9 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.mini_cake)
-    mySprite4.setPosition(76, 110)
-    mySprite4.setVelocity(120, 0)
+        mySprite4.setPosition(76, 110)
+        mySprite4.setVelocity(120, 0)
+    }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.setVelocity(0, -100)
