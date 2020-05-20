@@ -1,6 +1,32 @@
 namespace SpriteKind {
     export const wall = SpriteKind.create()
+    export const mini_cake = SpriteKind.create()
+    export const defeated = SpriteKind.create()
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    info.changeScoreBy(-1)
+    music.pewPew.play()
+    mySprite4 = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 4 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . 3 3 3 . . . . . . . 
+. . . . . . 1 1 1 . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, SpriteKind.mini_cake)
+    mySprite4.setPosition(76, 110)
+    mySprite4.setVelocity(120, 0)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.setVelocity(0, -100)
     pause(500)
@@ -15,15 +41,81 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     music.baDing.play()
     mySprite2.startEffect(effects.confetti)
 })
+sprites.onOverlap(SpriteKind.mini_cake, SpriteKind.Enemy, function (sprite, otherSprite) {
+    mySprite3.destroy()
+    mySprite4.destroy()
+    mySprite5 = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 4 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 1 1 2 2 2 . . . . 
+. . . . . . 3 8 8 1 2 2 . . . . 
+. . . . . . 3 f 1 2 2 2 . . . . 
+. . . . . . 1 3 2 2 2 2 . . . . 
+. . . . . . 3 1 1 2 2 2 . . . . 
+. . . . . . . 3 3 1 2 2 . . . . 
+. . . . . . . 2 2 2 2 2 . . . . 
+. . . . . . . 2 2 2 2 2 . . . . 
+. . . . 2 . . 2 2 2 2 2 . . . . 
+. . . . 2 2 2 2 2 2 2 2 . . . . 
+`, SpriteKind.defeated)
+    mySprite5.setPosition(120, 110)
+    mySprite5.setVelocity(-50, 0)
+    animation.runImageAnimation(
+    mySprite5,
+    [img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 4 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 1 2 2 2 2 . . . . 
+. . . . . . . 3 1 3 2 2 . . . . 
+. . . . . . 3 8 8 2 2 2 . . . . 
+. . . . . . . f 1 2 2 2 . . . . 
+. . . . . . 3 3 3 2 2 2 . . . . 
+. . . . . . . 1 1 2 2 2 . . . . 
+. . . . . . . 3 2 1 2 2 . . . . 
+. . . . . . . 2 2 2 2 2 . . . . 
+. . . . 2 . . 2 2 2 2 2 . . . . 
+. . . . 2 2 2 2 2 2 2 2 . . . . 
+`,img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . 4 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 8 . . . . . . . . 
+. . . . . . . 1 2 2 2 2 . . . . 
+. . . . . . . 3 1 3 2 2 . . . . 
+. . . . . . 3 2 3 2 2 2 . . . . 
+. . . . . . . 8 8 2 2 2 . . . . 
+. . . . . . 3 3 3 2 2 2 . . . . 
+. . . . . . . 1 1 2 2 2 . . . . 
+. . . . . . . 3 2 1 2 2 . . . . 
+. . . . . . . 2 2 2 2 2 . . . . 
+. . . . 2 . . 2 2 2 2 2 . . . . 
+. . . . 2 2 2 2 2 2 2 2 . . . . 
+`],
+    2000,
+    true
+    )
+})
 sprites.onDestroyed(SpriteKind.Player, function (sprite) {
     info.changeLifeBy(-1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
 })
-let mySprite3: Sprite = null
 let projectile: Sprite = null
+let mySprite5: Sprite = null
+let mySprite3: Sprite = null
 let mySprite2: Sprite = null
+let mySprite4: Sprite = null
 let mySprite: Sprite = null
 mySprite = sprites.create(img`
 . . . . . . . . . . . . . . . . 
