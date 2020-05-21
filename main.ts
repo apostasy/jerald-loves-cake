@@ -30,9 +30,11 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    mySprite.setVelocity(0, -100)
-    pause(500)
-    mySprite.setVelocity(0, 100)
+    if (mySprite.y >= 110) {
+        mySprite.setVelocity(0, -100)
+        pause(500)
+        mySprite.setVelocity(0, 100)
+    }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     mySprite.destroy()
